@@ -7,6 +7,31 @@ export interface IIPFS {
     add(): Promise<void>;
 }
 
+export interface IRepContract {
+    contract: any;
+    tokens: {
+        // @ts-ignore
+        [key: Bytes<32>]: ITokenInstance;
+    };
+    init(): Promise<void>;
+    getToken(tokenName: Bytes<32>): Promise<ITokenInstance>;
+    createToken(CID: Bytes<unknown>, tokenName: Bytes<32>, controllers: string[]): Promise<ITokenInstance>;
+}
+
+export interface ITokenInstance {
+    tokenInstance: any;
+    tokenName: Bytes<32>;
+    CID: string;
+    owner: string;
+    balanceOf(address: string): Promise<number>;
+    issue(to: string, amount: number): Promise<void>;
+    burn(from: string, amount: number): Promise<void>;
+    manageController(address: string, state: boolean): Promise<boolean>;
+    changeTokenStandard(CID: Bytes<unknown>): Promise<boolean>;
+    changeTokenState(inUse: boolean): Promise<boolean>;
+    transferOwnership(newOwner: string): Promise<boolean>;
+}
+
 export interface IToken {
     name: Bytes<32>;
     editTime: Date;
